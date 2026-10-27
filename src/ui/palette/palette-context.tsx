@@ -20,7 +20,10 @@ export type PaletteState = {
   palette: Palette;
   /** Each swatch's name, once the list of names has loaded. */
   swatchNames: SwatchNames | undefined;
-  /** Changes the seed. The path follows shortly after. */
+  /**
+   * Changes the seed, picked for the variant the page shows. The path follows
+   * shortly after.
+   */
   setSeed: (seed: string) => void;
 };
 

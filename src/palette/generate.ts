@@ -117,19 +117,24 @@ const DARK_ACCENT_LIGHTNESS = { min: 0.45, max: 0.97 };
  * the 32 swatches exactly (see `slot`); the rest follow from it.
  *
  * @param seedHex - A 3- or 6-digit hex color, with or without `#`.
+ * @param picked - The variant the seed was picked for, which holds it when
+ *   it can (see `classifySeed`).
  * @returns The pair, or `undefined` when `seedHex` is not a hex color.
  *
  * @example
  * const pair = generatePalette('#7ab4c8');
  * pair?.dark.hue[1].hex; // '#7ab4c8': the seed is the dark primary
  */
-export function generatePalette(seedHex: string): PalettePair | undefined {
+export function generatePalette(
+  seedHex: string,
+  picked?: Variant,
+): PalettePair | undefined {
   const seed = normalizeHex(seedHex);
   const color = seed === undefined ? undefined : parseHex(seed);
   if (seed === undefined || color === undefined) {
     return undefined;
   }
-  const slot = classifySeed(color);
+  const slot = classifySeed(color, picked);
   const anchor = solveAnchor(color, slot);
   const dark = darkPalette(anchor);
   const light = lightPalette(anchor, dark);

@@ -81,4 +81,57 @@ describe('classifySeed', () => {
       });
     });
   });
+
+  describe('seeds picked for a variant', () => {
+    it('makes a deep color picked in the light variant a light accent', () => {
+      expect(classifySeed(seed('#8b1a1a'), 'light')).toMatchObject({
+        variant: 'light',
+        group: 'hue',
+      });
+    });
+
+    it('makes a near-black picked in the light variant its text', () => {
+      expect(classifySeed(seed('#2a0040'), 'light')).toEqual({
+        variant: 'light',
+        group: 'ink',
+        index: 2,
+      });
+    });
+
+    it('makes a mid-dark accent picked in the dark variant a dark accent', () => {
+      expect(classifySeed(seed('#1e66f5'), 'dark')).toEqual({
+        variant: 'dark',
+        group: 'hue',
+        index: 3,
+      });
+    });
+
+    it('makes white picked in the dark variant its brightest text', () => {
+      expect(classifySeed(seed('#ffffff'), 'dark')).toEqual({
+        variant: 'dark',
+        group: 'ink',
+        index: 2,
+      });
+    });
+
+    it('leaves a seed that belongs to the variant where it is', () => {
+      expect(classifySeed(seed('#7ab4c8'), 'dark')).toEqual(
+        classifySeed(seed('#7ab4c8')),
+      );
+    });
+
+    it('leaves a seed that fits no slot of the variant where it is', () => {
+      expect(classifySeed(seed('#7ab4c8'), 'light')).toEqual(
+        classifySeed(seed('#7ab4c8')),
+      );
+    });
+
+    it('keeps light text out of reach of a gray too light to read', () => {
+      expect(classifySeed(seed('#666666'), 'light')).toMatchObject({
+        variant: 'light',
+        group: 'surface',
+        index: 3,
+      });
+    });
+  });
 });

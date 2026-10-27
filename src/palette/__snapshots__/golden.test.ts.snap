@@ -47,6 +47,53 @@ exports[`generatePalette output > is pinned for #000000 1`] = `
 }
 `;
 
+exports[`generatePalette output > is pinned for #000000 picked in light 1`] = `
+{
+  "dark": [
+    "#303030",
+    "#3e3e3e",
+    "#494949",
+    "#595959",
+    "#dcdcdc",
+    "#e8e8e8",
+    "#f0f0f0",
+    "#93bcb5",
+    "#8ac1c7",
+    "#7da4bb",
+    "#5984a6",
+    "#c0696a",
+    "#cf8c6e",
+    "#e7ca8d",
+    "#9ebe8f",
+    "#a891b8",
+  ],
+  "light": [
+    "#f7f7f7",
+    "#ededed",
+    "#e2e2e2",
+    "#868686",
+    "#232323",
+    "#161616",
+    "#000000",
+    "#46726b",
+    "#337278",
+    "#4b768f",
+    "#5081a6",
+    "#be5d60",
+    "#a65f3e",
+    "#7b5f12",
+    "#517241",
+    "#826993",
+  ],
+  "name": "Quarry",
+  "slot": {
+    "group": "ink",
+    "index": 2,
+    "variant": "light",
+  },
+}
+`;
+
 exports[`generatePalette output > is pinned for #00ff88 1`] = `
 {
   "dark": [
@@ -90,6 +137,53 @@ exports[`generatePalette output > is pinned for #00ff88 1`] = `
     "group": "hue",
     "index": 1,
     "variant": "dark",
+  },
+}
+`;
+
+exports[`generatePalette output > is pinned for #1e3a8a picked in light 1`] = `
+{
+  "dark": [
+    "#263141",
+    "#313f54",
+    "#394a62",
+    "#475b77",
+    "#d3dded",
+    "#e1e8f3",
+    "#ecf0f7",
+    "#9aeaf3",
+    "#9cebff",
+    "#9ec7ff",
+    "#7fa2f2",
+    "#d05b60",
+    "#dd845b",
+    "#efc973",
+    "#96c182",
+    "#b48aba",
+  ],
+  "light": [
+    "#f2f7ff",
+    "#e7eef9",
+    "#d9e3f1",
+    "#7587a2",
+    "#2d3d53",
+    "#212e42",
+    "#152132",
+    "#006973",
+    "#00687c",
+    "#3c669f",
+    "#1e3a8a",
+    "#d24e57",
+    "#b65626",
+    "#825c00",
+    "#487531",
+    "#906396",
+  ],
+  "name": "Harbor",
+  "slot": {
+    "group": "hue",
+    "index": 3,
+    "variant": "light",
   },
 }
 `;
@@ -141,6 +235,53 @@ exports[`generatePalette output > is pinned for #1e66f5 1`] = `
 }
 `;
 
+exports[`generatePalette output > is pinned for #1e66f5 picked in dark 1`] = `
+{
+  "dark": [
+    "#253141",
+    "#304054",
+    "#374a62",
+    "#455b77",
+    "#d2deec",
+    "#e1e9f3",
+    "#ebf1f7",
+    "#01c0cd",
+    "#01bef4",
+    "#3793fa",
+    "#1e66f5",
+    "#dc4e58",
+    "#e87d4a",
+    "#f5c75b",
+    "#90c478",
+    "#b887c1",
+  ],
+  "light": [
+    "#f1f7ff",
+    "#e6eef9",
+    "#d8e3f1",
+    "#7488a1",
+    "#2b3d53",
+    "#1f2f42",
+    "#142131",
+    "#007882",
+    "#00739e",
+    "#0073e4",
+    "#387bfe",
+    "#e13e4f",
+    "#c24e00",
+    "#825c00",
+    "#40761f",
+    "#94609e",
+  ],
+  "name": "Glacier",
+  "slot": {
+    "group": "hue",
+    "index": 3,
+    "variant": "dark",
+  },
+}
+`;
+
 exports[`generatePalette output > is pinned for #2a0040 1`] = `
 {
   "dark": [
@@ -188,6 +329,53 @@ exports[`generatePalette output > is pinned for #2a0040 1`] = `
 }
 `;
 
+exports[`generatePalette output > is pinned for #2a0040 picked in light 1`] = `
+{
+  "dark": [
+    "#372a41",
+    "#473654",
+    "#533f62",
+    "#654e77",
+    "#e3d7ed",
+    "#ece4f3",
+    "#f3eef7",
+    "#86b4f6",
+    "#a4abff",
+    "#b685da",
+    "#a061b4",
+    "#db5059",
+    "#e67e4d",
+    "#f4c75f",
+    "#91c379",
+    "#42aeb0",
+  ],
+  "light": [
+    "#faf4ff",
+    "#f2eaf9",
+    "#e8ddf1",
+    "#917ca2",
+    "#4f1a6e",
+    "#3e0e59",
+    "#2a0040",
+    "#3a6aaf",
+    "#5e61b8",
+    "#905ab6",
+    "#a861be",
+    "#de404f",
+    "#bf4e01",
+    "#815c00",
+    "#417521",
+    "#007d80",
+  ],
+  "name": "Blue Hour",
+  "slot": {
+    "group": "ink",
+    "index": 2,
+    "variant": "light",
+  },
+}
+`;
+
 exports[`generatePalette output > is pinned for #7ab4c8 1`] = `
 {
   "dark": [
@@ -231,6 +419,53 @@ exports[`generatePalette output > is pinned for #7ab4c8 1`] = `
     "group": "hue",
     "index": 1,
     "variant": "dark",
+  },
+}
+`;
+
+exports[`generatePalette output > is pinned for #8b1a1a picked in light 1`] = `
+{
+  "dark": [
+    "#402a2a",
+    "#523636",
+    "#603f3f",
+    "#744e4e",
+    "#ecd6d6",
+    "#f3e4e3",
+    "#f7eded",
+    "#f9c7f8",
+    "#ffc6e8",
+    "#ffaaab",
+    "#ec8277",
+    "#d05874",
+    "#d98848",
+    "#f0c86f",
+    "#95c280",
+    "#60a5c7",
+  ],
+  "light": [
+    "#fff4f4",
+    "#f8e9e9",
+    "#f1dcdc",
+    "#a07c7c",
+    "#513233",
+    "#402526",
+    "#30191a",
+    "#7f4f7f",
+    "#854e70",
+    "#a14b50",
+    "#8b1a1a",
+    "#db5375",
+    "#9a4500",
+    "#815c00",
+    "#46742d",
+    "#23789d",
+  ],
+  "name": "Conservatory",
+  "slot": {
+    "group": "hue",
+    "index": 3,
+    "variant": "light",
   },
 }
 `;
@@ -466,6 +701,53 @@ exports[`generatePalette output > is pinned for #ffffff 1`] = `
     "group": "surface",
     "index": 0,
     "variant": "light",
+  },
+}
+`;
+
+exports[`generatePalette output > is pinned for #ffffff picked in dark 1`] = `
+{
+  "dark": [
+    "#303030",
+    "#3e3e3e",
+    "#494949",
+    "#595959",
+    "#e2e2e2",
+    "#eeeeee",
+    "#ffffff",
+    "#93bcb5",
+    "#8ac1c7",
+    "#7da4bb",
+    "#5984a6",
+    "#c0696a",
+    "#cf8c6e",
+    "#e7ca8d",
+    "#9ebe8f",
+    "#a891b8",
+  ],
+  "light": [
+    "#f7f7f7",
+    "#ededed",
+    "#e2e2e2",
+    "#868686",
+    "#3c3c3c",
+    "#2e2e2e",
+    "#202020",
+    "#46726b",
+    "#337278",
+    "#4b768f",
+    "#5081a6",
+    "#be5d60",
+    "#a65f3e",
+    "#7b5f12",
+    "#517241",
+    "#826993",
+  ],
+  "name": "Darkroom",
+  "slot": {
+    "group": "ink",
+    "index": 2,
+    "variant": "dark",
   },
 }
 `;

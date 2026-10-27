@@ -33,6 +33,27 @@ const VIVID_CHROMA = 0.1;
 /** Accents at least this light belong to the dark variant. */
 const DARK_VARIANT_ACCENT = 0.6;
 
+type Range = { min: number; max: number };
+
+/**
+ * Lightness of the in-hue accents a variant takes from a seed picked for it.
+ * Lighter accents would fade into the light variant's backgrounds, darker
+ * ones into the dark variant's. Darker colorful seeds become neutrals.
+ */
+const PICKED_ACCENT = {
+  dark: { min: 0.45, max: Infinity },
+  light: { min: 0.3, max: DARK_VARIANT_ACCENT },
+} as const satisfies Record<Variant, Range>;
+
+/**
+ * Lightness of the neutrals a variant takes from a seed picked for it. Past
+ * these, text would no longer read at 7:1 on the backgrounds.
+ */
+const PICKED_NEUTRAL = {
+  dark: { surface: { min: 0, max: 0.55 }, ink: { min: 0.82, max: Infinity } },
+  light: { surface: { min: 0, max: Infinity }, ink: { min: 0, max: 0.4 } },
+} as const satisfies Record<Variant, Record<'surface' | 'ink', Range>>;
+
 /**
  * Typical lightness of the in-hue accents of the light variant. The real
  * values depend on the hue (they are contrast-mirrored); these only pick the
@@ -62,24 +83,54 @@ const PRIMARY_BIAS = 0.09;
  * - A gray, near-black or near-white seed is a neutral: a dark background, a
  *   light text or background, or the faded ink of light comments.
  *
+ * A seed picked for a variant goes into that variant whenever one of its
+ * slots fits: a deep blue picked in a light theme is a light accent, not a
+ * dark background. When none fits, or the seed belongs there anyway, the
+ * variant changes nothing.
+ *
  * @param color - The seed.
+ * @param picked - The variant the seed was picked for, if any.
  *
  * @example
  * classifySeed(parseHex('#7ab4c8')); // { variant: 'dark', group: 'hue', index: 1 }
+ * classifySeed(parseHex('#2a0040')); // { variant: 'dark', group: 'surface', index: 0 }
+ * classifySeed(parseHex('#2a0040'), 'light'); // { variant: 'light', group: 'ink', index: 2 }
  */
-export function classifySeed({ l, c }: OKLCH): SeedSlot {
-  const colorful =
-    c >= ACCENT_CHROMA &&
-    l >= DARKEST_ACCENT &&
-    (l <= LIGHTEST_ACCENT || c >= VIVID_CHROMA);
-  if (colorful) {
-    return classifyAccent(l);
+export function classifySeed(color: OKLCH, picked?: Variant): SeedSlot {
+  const slot = classifyInPair(color);
+  if (picked === undefined || slot.variant === picked) {
+    return slot;
   }
-  return classifyNeutral(l);
+  return classifyInVariant(color, picked) ?? slot;
 }
 
-function classifyAccent(lightness: number): SeedSlot {
-  const variant: Variant = lightness >= DARK_VARIANT_ACCENT ? 'dark' : 'light';
+const colorful = ({ l, c }: OKLCH): boolean =>
+  c >= ACCENT_CHROMA && (l <= LIGHTEST_ACCENT || c >= VIVID_CHROMA);
+
+function classifyInPair(color: OKLCH): SeedSlot {
+  if (colorful(color) && color.l >= DARKEST_ACCENT) {
+    const variant: Variant = color.l >= DARK_VARIANT_ACCENT ? 'dark' : 'light';
+    return classifyAccent(color.l, variant);
+  }
+  return nearestNeutral(color.l, NEUTRAL_SEED_SLOTS) ?? NEUTRAL_SEED_SLOTS[0];
+}
+
+function classifyInVariant(
+  color: OKLCH,
+  variant: Variant,
+): SeedSlot | undefined {
+  const accent = PICKED_ACCENT[variant];
+  if (colorful(color) && color.l >= accent.min) {
+    return color.l < accent.max ? classifyAccent(color.l, variant) : undefined;
+  }
+  const fitting = PICKED_SEED_SLOTS[variant].filter(({ group }) => {
+    const { min, max } = PICKED_NEUTRAL[variant][group];
+    return color.l >= min && color.l <= max;
+  });
+  return nearestNeutral(color.l, fitting);
+}
+
+function classifyAccent(lightness: number, variant: Variant): SeedSlot {
   const ladder =
     variant === 'dark'
       ? HUE_OFFSETS.map((offset) => PRIMARY_LIGHTNESS + offset.lightness)
@@ -91,23 +142,11 @@ function classifyAccent(lightness: number): SeedSlot {
   return { variant, group: 'hue', index: primary ? 1 : index };
 }
 
-/**
- * Slots a neutral seed can take. The dark variant's backgrounds and text, the
- * light variant's backgrounds and its comment gray; not the light variant's
- * text, which the dark backgrounds already cover.
- */
-const NEUTRAL_SEED_SLOTS: readonly (SeedSlot & { lightness: number })[] = [
-  ...slotsOf('dark', 'surface', NEUTRAL_LIGHTNESS.dark.surface),
-  ...slotsOf('dark', 'ink', NEUTRAL_LIGHTNESS.dark.ink),
-  ...slotsOf('light', 'surface', NEUTRAL_LIGHTNESS.light.surface),
-];
+/** A neutral slot, and the lightness the structure gives it. */
+type NeutralSlot = SeedSlot & { group: 'surface' | 'ink'; lightness: number };
 
-function slotsOf(
-  variant: Variant,
-  group: Group,
-  ladder: readonly number[],
-): (SeedSlot & { lightness: number })[] {
-  return ladder.map((lightness, index) => ({
+function slotsOf(variant: Variant, group: 'surface' | 'ink'): NeutralSlot[] {
+  return NEUTRAL_LIGHTNESS[variant][group].map((lightness, index) => ({
     variant,
     group,
     index,
@@ -115,12 +154,35 @@ function slotsOf(
   }));
 }
 
-function classifyNeutral(lightness: number): SeedSlot {
-  const ladder = NEUTRAL_SEED_SLOTS.map((slot) => slot.lightness);
-  const { variant, group, index } =
-    NEUTRAL_SEED_SLOTS[nearest(lightness, ladder)] ?? NEUTRAL_SEED_SLOTS[0];
+/**
+ * Slots a neutral seed can take. The dark variant's backgrounds and text, the
+ * light variant's backgrounds and its comment gray; not the light variant's
+ * text, which the dark backgrounds already cover.
+ */
+const NEUTRAL_SEED_SLOTS: readonly NeutralSlot[] = [
+  ...slotsOf('dark', 'surface'),
+  ...slotsOf('dark', 'ink'),
+  ...slotsOf('light', 'surface'),
+];
+
+/** Neutral slots of each variant, for a seed picked for it. */
+const PICKED_SEED_SLOTS: Record<Variant, readonly NeutralSlot[]> = {
+  dark: [...slotsOf('dark', 'surface'), ...slotsOf('dark', 'ink')],
+  light: [...slotsOf('light', 'surface'), ...slotsOf('light', 'ink')],
+};
+
+/** The slot nearest in lightness, or `undefined` when there are none. */
+const nearestNeutral = (
+  lightness: number,
+  slots: readonly NeutralSlot[],
+): SeedSlot | undefined => {
+  if (slots.length === 0) {
+    return undefined;
+  }
+  const ladder = slots.map((slot) => slot.lightness);
+  const { variant, group, index } = slots[nearest(lightness, ladder)];
   return { variant, group, index };
-}
+};
 
 /**
  * Index of the ladder value closest to `value`. Ties go to the earliest index

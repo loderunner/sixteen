@@ -80,6 +80,31 @@ describe('routes', () => {
     expect(router.state.location.pathname).toBe('/e06c75');
   });
 
+  it('shows a seed picked for a variant in that variant', async () => {
+    renderAt('/light/2a0040');
+    await screen.findByRole('heading', { level: 1 });
+
+    expect(
+      document.documentElement.style.getPropertyValue('--light-ink-2'),
+    ).toBe('#2a0040');
+  });
+
+  it('redirects a variant that does not move the seed to the seed alone', async () => {
+    const router = renderAt('/light/7ab4c8');
+
+    await screen.findByRole('heading', { level: 1 });
+
+    expect(router.state.location.pathname).toBe('/7ab4c8');
+  });
+
+  it('shows not found for a path that is not a variant', async () => {
+    renderAt('/dim/7ab4c8');
+
+    expect(
+      await screen.findByRole('heading', { name: 'No palette here' }),
+    ).toBeVisible();
+  });
+
   it('shows not found for a path that is not a seed', async () => {
     renderAt('/teal');
 
@@ -91,6 +116,7 @@ describe('routes', () => {
 
 describe('the hex field', () => {
   beforeEach(() => {
+    document.documentElement.removeAttribute('data-theme');
     vi.stubGlobal('matchMedia', () => ({
       matches: false,
       addEventListener: vi.fn(),
@@ -116,6 +142,26 @@ describe('the hex field', () => {
       expect(router.state.location.pathname).toBe('/e06c75');
     });
   });
+
+  it.each([
+    ['light', '2a0040', '/light/2a0040'],
+    ['dark', '1e66f5', '/dark/1e66f5'],
+  ])(
+    'puts a color typed in the %s theme in that variant',
+    async (theme, hex, path) => {
+      document.documentElement.dataset.theme = theme;
+      const router = renderAt('/7ab4c8');
+      const field = await screen.findByRole('textbox', { name: 'Hex' });
+
+      await userEvent.clear(field);
+      await userEvent.type(field, hex);
+
+      await waitFor(() => {
+        expect(router.state.location.pathname).toBe(path);
+      });
+      expect(screen.queryByText(/Switch the theme/)).not.toBeInTheDocument();
+    },
+  );
 });
 
 describe('the export section', () => {

@@ -7,7 +7,7 @@ import { usePalette } from '@/ui/palette';
 /** What the exporters need, for the palette on screen. */
 export function useExportInput(): ExportInput {
   const { pair, names, swatchNames } = usePalette();
-  const href = useHref(pathOfSeed(pair.seed));
+  const href = useHref(pathOfSeed(pair.seed, pair.slot.variant));
   return {
     pair,
     names,

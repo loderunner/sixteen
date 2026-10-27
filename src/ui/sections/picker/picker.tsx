@@ -3,7 +3,7 @@ import { EyedropperIcon, ShuffleIcon } from '@phosphor-icons/react';
 import { type ComponentProps } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { toHex } from '@/palette';
+import { randomSeed } from '@/palette';
 import { Button } from '@/ui/components/button';
 import { usePalette } from '@/ui/palette';
 
@@ -22,14 +22,6 @@ const hasEyeDropper = (
   scope: object,
 ): scope is { EyeDropper: EyeDropperConstructor } => 'EyeDropper' in scope;
 
-/** A pleasant random seed: a mid-light color of moderate chroma. */
-const randomSeed = () =>
-  toHex({
-    l: 0.55 + Math.random() * 0.3,
-    c: 0.04 + Math.random() * 0.12,
-    h: Math.random() * 360,
-  });
-
 /**
  * Picks the seed: a saturation and brightness area with a hue strip, sliders
  * in OKLCH, HSL or RGB, a hex field, an eyedropper where the browser has one,
@@ -37,7 +29,7 @@ const randomSeed = () =>
  * is the wrapper.
  */
 export function Picker({ className, ...props }: ComponentProps<'div'>) {
-  const { pair, setSeed } = usePalette();
+  const { pair, variant, setSeed } = usePalette();
   const [hsv, setHSV] = useChannels(HSV, pair.seed, setSeed);
   const [hue, saturation, brightness] = hsv;
 
@@ -116,7 +108,7 @@ export function Picker({ className, ...props }: ComponentProps<'div'>) {
           aria-label="Random color"
           title="Random color"
           onClick={() => {
-            setSeed(randomSeed());
+            setSeed(randomSeed(variant));
           }}
           className="mb-px"
         >

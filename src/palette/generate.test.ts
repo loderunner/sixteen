@@ -33,15 +33,19 @@ const GRID = [
 
 const VARIANTS: Variant[] = ['dark', 'light'];
 
-const generate = (seed: string): PalettePair => {
-  const pair = generatePalette(seed);
+const generate = (seed: string, picked?: Variant): PalettePair => {
+  const pair = generatePalette(seed, picked);
   if (pair === undefined) {
     throw new Error(`No palette for ${seed}`);
   }
   return pair;
 };
 
-const PAIRS = GRID.map(generate);
+/** Every grid seed, unpicked and picked in each variant. */
+const PAIRS = GRID.flatMap((seed) => [
+  generate(seed),
+  ...VARIANTS.map((variant) => generate(seed, variant)),
+]);
 
 const colorOf = (hex: string): OKLCH => {
   const color = parseHex(hex);

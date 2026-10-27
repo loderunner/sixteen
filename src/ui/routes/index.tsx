@@ -9,13 +9,16 @@ import { useResolvedTheme } from '@/ui/theme';
 import { NotFoundPage } from './not-found-page';
 import { PalettePage } from './palette-page';
 
-/** Every route of the app: a palette is a path, `/<seed>`; `/` picks one. */
+/**
+ * Every route of the app: a palette is a path, `/<seed>` or
+ * `/<variant>/<seed>`; `/` picks one.
+ */
 export const routes: RouteObject[] = [
   {
     element: <RootLayout />,
     children: [
       { path: '/', element: <RandomPalette /> },
-      { path: '/:seed', element: <PalettePage /> },
+      { path: '/:variant?/:seed', element: <PalettePage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

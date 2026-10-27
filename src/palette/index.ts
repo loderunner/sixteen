@@ -24,7 +24,7 @@ export {
   type PaletteNames,
   type SwatchNames,
 } from './names';
-export { pathOfSeed, seedOfSegment } from './path';
+export { pathOfSeed, seedOfSegment, variantOfSegment } from './path';
 export { randomSeed } from './random';
 export {
   type Group,

@@ -7,10 +7,13 @@ import {
   pathOfSeed,
   type PalettePair,
   seedOfSegment,
+  type Variant,
+  variantOfSegment,
 } from '@/palette';
 import {
   applyPalette,
   PaletteProvider,
+  type PickedSeed,
   useSeed,
   useSwatchNames,
 } from '@/ui/palette';
@@ -25,33 +28,47 @@ import { useResolvedTheme } from '@/ui/theme';
 import { NotFoundPage } from './not-found-page';
 
 /**
- * The page of one palette, at `/<seed>`. A seed spelled another way
- * (uppercase, 3 digits) redirects to its canonical path.
+ * The page of one palette, at `/<seed>`, or `/<variant>/<seed>` for a seed
+ * picked for a variant. A seed spelled another way (uppercase, 3 digits), or
+ * a variant that doesn't move it, redirects to the canonical path.
  */
 export function PalettePage() {
-  const { seed: segment = '' } = useParams();
-  const pathSeed = seedOfSegment(segment);
+  const { variant: variantSegment, seed: seedSegment = '' } = useParams();
+  const seed = seedOfSegment(seedSegment);
+  const picked =
+    variantSegment === undefined ? undefined : variantOfSegment(variantSegment);
 
-  if (pathSeed === undefined) {
+  if (
+    seed === undefined ||
+    (variantSegment !== undefined && picked === undefined)
+  ) {
     return <NotFoundPage />;
   }
-  if (pathOfSeed(pathSeed) !== `/${segment}`) {
-    return <Navigate to={pathOfSeed(pathSeed)} replace />;
+  const path =
+    variantSegment === undefined
+      ? `/${seedSegment}`
+      : `/${variantSegment}/${seedSegment}`;
+  if (pathOfSeed(seed, picked) !== path) {
+    return <Navigate to={pathOfSeed(seed, picked)} replace />;
   }
-  return <Palette pathSeed={pathSeed} />;
+  return <Palette fromPath={{ seed, picked }} />;
 }
 
 type PaletteProps = {
-  /** The seed in the path, as `#rrggbb`. */
-  pathSeed: string;
+  /** The seed in the path. */
+  fromPath: PickedSeed;
 };
 
-function Palette({ pathSeed }: PaletteProps) {
-  const [seed, setSeed] = useSeed(pathSeed);
-  const pair = useMemo(() => generateOrThrow(seed), [seed]);
+function Palette({ fromPath }: PaletteProps) {
+  const [{ seed, picked }, setPickedSeed] = useSeed(fromPath);
+  const pair = useMemo(() => generateOrThrow(seed, picked), [seed, picked]);
   const names = useMemo(() => namePalette(pair), [pair]);
   const swatchNames = useSwatchNames(pair);
   const variant = useResolvedTheme();
+  // A color picked on screen is picked for the variant the page shows.
+  const setSeed = (next: string) => {
+    setPickedSeed({ seed: next, picked: variant });
+  };
   const hero = useRef<HTMLElement>(null);
 
   // Before paint, so the page never shows the previous palette.
@@ -91,8 +108,8 @@ const EditorSection = lazy(async () => {
   return { default: module.EditorSection };
 });
 
-const generateOrThrow = (seed: string): PalettePair => {
-  const pair = generatePalette(seed);
+const generateOrThrow = (seed: string, picked?: Variant): PalettePair => {
+  const pair = generatePalette(seed, picked);
   if (pair === undefined) {
     throw new Error(`Not a hex color: ${seed}`);
   }
