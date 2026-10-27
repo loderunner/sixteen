@@ -1,17 +1,30 @@
+import { copyFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
+
+const outDir = fileURLToPath(new URL('./dist', import.meta.url));
+
+// Static hosts like GitHub Pages serve 404.html for any unknown path. Making it
+// the app lets a palette path (`/7ab4c8`) load the SPA, which then routes it.
+const spaFallback = (): Plugin => ({
+  name: 'spa-fallback',
+  apply: 'build',
+  closeBundle: async () => {
+    await copyFile(`${outDir}/index.html`, `${outDir}/404.html`);
+  },
+});
 
 export default defineConfig({
   root: fileURLToPath(new URL('./src/ui', import.meta.url)),
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), spaFallback()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
   build: {
-    outDir: fileURLToPath(new URL('./dist', import.meta.url)),
+    outDir,
     emptyOutDir: true,
     rolldownOptions: {
       output: {
