@@ -41,7 +41,9 @@ describe.each(EXPORT_FORMATS)('$name export', (format) => {
   });
 
   it('is named after the palette', () => {
-    expect(format.build(input, 'dark').filename).toMatch(
+    const { filename } = format.build(input, 'dark');
+
+    expect(filename.toLowerCase().replace(/ /g, '-')).toMatch(
       new RegExp(`^${slugOf(input.names.palette)}[.-]`),
     );
   });
@@ -54,18 +56,20 @@ describe.each(EXPORT_FORMATS)('$name export', (format) => {
   });
 });
 
-describe.each(EXPORT_FORMATS.filter(({ variants }) => variants === 'both'))(
-  '$name export, holding both variants',
-  (format) => {
-    it('lists all 32 swatches', () => {
-      const { content } = format.build(input, 'dark');
+// iTerm2 also holds both, as color components: its own tests cover it.
+describe.each(
+  EXPORT_FORMATS.filter(
+    ({ id, variants }) => variants === 'both' && id !== 'iterm2',
+  ),
+)('$name export, holding both variants as hex', (format) => {
+  it('lists all 32 swatches', () => {
+    const { content } = format.build(input, 'dark');
 
-      for (const hex of allHexes) {
-        expect(content).toContain(hex);
-      }
-    });
-  },
-);
+    for (const hex of allHexes) {
+      expect(content).toContain(hex);
+    }
+  });
+});
 
 describe.each(
   EXPORT_FORMATS.filter(({ id }) => id === 'css' || id === 'tailwind'),
@@ -125,5 +129,51 @@ describe('TextMate export', () => {
       content.match(/<\/dict>/g)?.length,
     );
     expect(content).toContain('<key>scope</key>');
+  });
+});
+
+describe('iTerm2 export', () => {
+  const { content } = EXPORT_FORMATS.find(({ id }) => id === 'iterm2')?.build(
+    input,
+    'dark',
+  ) ?? { content: '' };
+
+  it('holds every ANSI color for both appearances', () => {
+    for (let index = 0; index < 16; index++) {
+      expect(content).toContain(`<key>Ansi ${index} Color</key>`);
+      expect(content).toContain(`<key>Ansi ${index} Color (Dark)</key>`);
+      expect(content).toContain(`<key>Ansi ${index} Color (Light)</key>`);
+    }
+  });
+
+  it('writes components between 0 and 1', () => {
+    const components = [...content.matchAll(/<real>([^<]+)<\/real>/g)].map(
+      ([, value]) => Number(value),
+    );
+
+    expect(components.length).toBeGreaterThan(100);
+    for (const component of components) {
+      expect(component).toBeGreaterThanOrEqual(0);
+      expect(component).toBeLessThanOrEqual(1);
+    }
+  });
+});
+
+describe('Ghostty export', () => {
+  const format = EXPORT_FORMATS.find(({ id }) => id === 'ghostty');
+
+  it('sets 16 palette colors, the background and the foreground', () => {
+    const { content } = format?.build(input, 'light') ?? { content: '' };
+
+    expect(content.match(/^palette = \d+=#[0-9a-f]{6}$/gm)).toHaveLength(16);
+    expect(content).toMatch(/^background = #[0-9a-f]{6}$/m);
+    expect(content).toMatch(/^foreground = #[0-9a-f]{6}$/m);
+  });
+
+  it('names the files the config line uses', () => {
+    const dark = format?.build(input, 'dark').filename ?? '';
+    const light = format?.build(input, 'light').filename ?? '';
+
+    expect(format?.setup?.(input)).toBe(`theme = light:${light},dark:${dark}`);
   });
 });

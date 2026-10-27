@@ -17,6 +17,7 @@ import {
 import { ExportSection } from '@/ui/sections/export/export-section';
 import { Hero } from '@/ui/sections/hero/hero';
 import { SwatchesSection } from '@/ui/sections/swatches/swatches-section';
+import { TerminalSection } from '@/ui/sections/terminal/terminal-section';
 import { useResolvedTheme } from '@/ui/theme';
 
 import { NotFoundPage } from './not-found-page';
@@ -72,6 +73,7 @@ function Palette({ pathSeed }: PaletteProps) {
         <Suspense fallback={<div className="h-160" />}>
           <EditorSection />
         </Suspense>
+        <TerminalSection />
         <ExportSection />
       </main>
     </PaletteProvider>

@@ -73,12 +73,21 @@ type ExportRowProps = {
 function ExportRow({ format, variant }: ExportRowProps) {
   const input = useExportInput();
   const file = format.build(input, variant);
+  const setup = format.setup?.(input);
 
   return (
     <li className="flex flex-col gap-3 border-t border-surface-2 py-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <h3 className="font-medium text-ink-2">{format.name}</h3>
         <p className="text-sm text-ink-0">{format.description}</p>
+        {setup !== undefined && (
+          <div className="mt-2 flex items-center gap-1">
+            <code className="rounded-sm bg-surface-1 px-2 py-1 font-mono text-xs text-ink-1">
+              {setup}
+            </code>
+            <CopyButton text={setup} label="Copy the config line" />
+          </div>
+        )}
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Button

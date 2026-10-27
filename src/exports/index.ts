@@ -1,6 +1,8 @@
 import { type Variant } from '@/palette';
 
 import { cssFile } from './css';
+import { ghosttyConfigLine, ghosttyFile } from './ghostty';
+import { iterm2File } from './iterm2';
 import { type ExportFile, type ExportInput } from './roles';
 export {
   ansiColors,
@@ -9,6 +11,7 @@ export {
   TOKEN_RULES,
   type TokenRule,
 } from './syntax';
+export { terminalColors, type TerminalColors } from './terminal';
 export { vscodeTheme, type VSCodeTheme } from './vscode';
 import { tailwindFile } from './tailwind';
 import { textFile } from './text';
@@ -36,6 +39,8 @@ export type ExportFormat = {
   variants: 'both' | 'each';
   /** Builds the file; `variant` matters only for `each` formats. */
   build: (input: ExportInput, variant: Variant) => ExportFile;
+  /** A line of setup to show with the file, if it needs one. */
+  setup?: (input: ExportInput) => string;
 };
 
 /** Every export format, in the order they are offered. */
@@ -54,6 +59,23 @@ export const EXPORT_FORMATS: readonly ExportFormat[] = [
     description: 'A .tmTheme for Sublime Text, bat and other TextMate tools.',
     variants: 'each',
     build: tmThemeFile,
+  },
+  {
+    id: 'iterm2',
+    name: 'iTerm2',
+    description:
+      'A color preset with both palettes; iTerm2 3.5 follows the system appearance.',
+    variants: 'both',
+    build: iterm2File,
+  },
+  {
+    id: 'ghostty',
+    name: 'Ghostty',
+    description:
+      'A theme file for ~/.config/ghostty/themes. Get both, then add this line to your config:',
+    variants: 'each',
+    build: ghosttyFile,
+    setup: ghosttyConfigLine,
   },
   {
     id: 'css',
