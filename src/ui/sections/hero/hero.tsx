@@ -1,3 +1,6 @@
+import { type ComponentProps } from 'react';
+
+import { PaletteActions } from '@/ui/components/palette-actions';
 import { usePalette } from '@/ui/palette';
 import { ThemeToggle } from '@/ui/theme';
 
@@ -5,15 +8,18 @@ import { Picker } from '../picker/picker';
 import { Spectrum } from './spectrum';
 
 /** The top of the page: the palette's name, its seed, and its 16 colors. */
-export function Hero() {
+export function Hero({ ref, ...props }: ComponentProps<'header'>) {
   const { pair, names, variant } = usePalette();
   const elsewhere = pair.slot.variant !== variant;
 
   return (
-    <header className="flex flex-col gap-8">
+    <header ref={ref} className="flex flex-col gap-8" {...props}>
       <div className="flex items-center justify-between gap-4">
         <p className="font-semibold text-ink-1">Nord-like</p>
-        <ThemeToggle />
+        <div className="flex items-center gap-3">
+          <PaletteActions />
+          <ThemeToggle />
+        </div>
       </div>
       <div className="flex flex-col gap-10 lg:flex-row lg:items-stretch">
         <div className="flex min-w-0 flex-1 flex-col gap-8">

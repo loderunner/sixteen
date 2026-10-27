@@ -7,11 +7,9 @@ import { EXPORT_FORMATS, type ExportFormat } from '@/exports';
 import { type Variant } from '@/palette';
 import { Button } from '@/ui/components/button';
 import { CopyButton } from '@/ui/components/copy-button';
+import { downloadFile, useExportInput } from '@/ui/components/palette-actions';
 import { usePalette } from '@/ui/palette';
 import { tw } from '@/ui/tw';
-
-import { downloadFile } from './download';
-import { useExportInput } from './use-export-input';
 
 const option = tw`cursor-pointer rounded-md px-3 py-1 text-sm text-ink-0 data-checked:bg-surface-2 data-checked:text-ink-2`;
 

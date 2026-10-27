@@ -144,3 +144,31 @@ describe('the export section', () => {
     expect(await blob.text()).toContain('--surface-0: var(');
   });
 });
+
+describe('sharing', () => {
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('copies the palette link and confirms it', async () => {
+    const user = userEvent.setup();
+    renderAt('/7ab4c8');
+
+    // The hero's; the sticky bar has its own.
+    const buttons = await screen.findAllByRole('button', { name: 'Copy link' });
+    await user.click(buttons[0]);
+
+    expect(await navigator.clipboard.readText()).toBe(
+      `${window.location.origin}/7ab4c8`,
+    );
+    expect(await screen.findByText('Link copied')).toBeVisible();
+  });
+});

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect, useMemo } from 'react';
+import { lazy, Suspense, useLayoutEffect, useMemo, useRef } from 'react';
 import { Navigate, useParams } from 'react-router';
 
 import {
@@ -17,6 +17,7 @@ import {
 import { ExportSection } from '@/ui/sections/export/export-section';
 import { Hero } from '@/ui/sections/hero/hero';
 import { ShowcaseSection } from '@/ui/sections/showcase/showcase-section';
+import { StickyBar } from '@/ui/sections/sticky-bar/sticky-bar';
 import { SwatchesSection } from '@/ui/sections/swatches/swatches-section';
 import { TerminalSection } from '@/ui/sections/terminal/terminal-section';
 import { useResolvedTheme } from '@/ui/theme';
@@ -51,6 +52,7 @@ function Palette({ pathSeed }: PaletteProps) {
   const names = useMemo(() => namePalette(pair), [pair]);
   const swatchNames = useSwatchNames(pair);
   const variant = useResolvedTheme();
+  const hero = useRef<HTMLElement>(null);
 
   // Before paint, so the page never shows the previous palette.
   useLayoutEffect(() => {
@@ -68,8 +70,9 @@ function Palette({ pathSeed }: PaletteProps) {
         swatchNames,
       }}
     >
+      <StickyBar watch={hero} />
       <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-20 px-4 py-6 sm:px-8 sm:py-10">
-        <Hero />
+        <Hero ref={hero} />
         <SwatchesSection />
         <ShowcaseSection />
         <Suspense fallback={<div className="h-160" />}>
