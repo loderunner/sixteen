@@ -42,7 +42,7 @@ describe.each(EXPORT_FORMATS)('$name export', (format) => {
 
   it('is named after the palette', () => {
     expect(format.build(input, 'dark').filename).toMatch(
-      new RegExp(`^${slugOf(input.names.palette)}\\.`),
+      new RegExp(`^${slugOf(input.names.palette)}[.-]`),
     );
   });
 
@@ -83,5 +83,47 @@ describe.each(
     expect(content).toContain("[data-theme='dark']");
     expect(content).toMatch(/--surface-0: var\(--[a-z-]+-light-surface-0\);/);
     expect(content).toMatch(/--surface-0: var\(--[a-z-]+-dark-surface-0\);/);
+  });
+});
+
+describe('VS Code export', () => {
+  const sixteenWithAlpha = (variant: 'dark' | 'light') =>
+    new RegExp(
+      `^(${swatchesOf(pair[variant])
+        .map(({ hex }) => hex)
+        .join('|')})([0-9a-f]{2})?$`,
+    );
+
+  it.each(['dark', 'light'] as const)(
+    'paints the %s theme from its 16 colors alone',
+    (variant) => {
+      const content =
+        EXPORT_FORMATS.find(({ id }) => id === 'vscode')?.build(input, variant)
+          .content ?? '{}';
+      // The credit names the seed, which may belong to the other variant.
+      const theme: unknown = JSON.parse(content, (key, value: unknown) =>
+        key === '$comment' ? undefined : value,
+      );
+      const colors = JSON.stringify(theme).match(/#[0-9a-f]{6,8}/gi) ?? [];
+
+      expect(colors.length).toBeGreaterThan(200);
+      for (const color of colors) {
+        expect(color).toMatch(sixteenWithAlpha(variant));
+      }
+    },
+  );
+});
+
+describe('TextMate export', () => {
+  it('is a well-formed property list', () => {
+    const { content } = EXPORT_FORMATS.find(
+      ({ id }) => id === 'tmtheme',
+    )?.build(input, 'dark') ?? { content: '' };
+
+    expect(content).toMatch(/^<\?xml/);
+    expect(content.match(/<dict>/g)?.length).toBe(
+      content.match(/<\/dict>/g)?.length,
+    );
+    expect(content).toContain('<key>scope</key>');
   });
 });

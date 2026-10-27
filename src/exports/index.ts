@@ -2,8 +2,18 @@ import { type Variant } from '@/palette';
 
 import { cssFile } from './css';
 import { type ExportFile, type ExportInput } from './roles';
+export {
+  ansiColors,
+  colorResolver,
+  type ThemeColor,
+  TOKEN_RULES,
+  type TokenRule,
+} from './syntax';
+export { vscodeTheme, type VSCodeTheme } from './vscode';
 import { tailwindFile } from './tailwind';
 import { textFile } from './text';
+import { tmThemeFile } from './tmtheme';
+import { vscodeFile } from './vscode';
 
 export {
   type ExportFile,
@@ -30,6 +40,21 @@ export type ExportFormat = {
 
 /** Every export format, in the order they are offered. */
 export const EXPORT_FORMATS: readonly ExportFormat[] = [
+  {
+    id: 'vscode',
+    name: 'VS Code',
+    description:
+      'A color theme for the editor, the workbench and the terminal, from the 16 colors alone.',
+    variants: 'each',
+    build: vscodeFile,
+  },
+  {
+    id: 'tmtheme',
+    name: 'TextMate',
+    description: 'A .tmTheme for Sublime Text, bat and other TextMate tools.',
+    variants: 'each',
+    build: tmThemeFile,
+  },
   {
     id: 'css',
     name: 'CSS',
