@@ -17,6 +17,7 @@ import { SpectrumSwatch } from './spectrum-swatch';
 export function Spectrum({ className, ...props }: ComponentProps<'figure'>) {
   const { pair, palette, variant, names, swatchNames } = usePalette();
   const background = palette.surface[0].color;
+  const labelColors = [palette.surface[0], palette.ink[2]];
   const seedIn = (group: string, index: number) =>
     pair.slot.variant === variant &&
     pair.slot.group === group &&
@@ -40,6 +41,7 @@ export function Spectrum({ className, ...props }: ComponentProps<'figure'>) {
             name={swatchNames?.[variant][start + index]}
             role={SWATCH_ROLES[variant][group][index] ?? ''}
             background={background}
+            labelColors={labelColors}
             seed={seedIn(group, index)}
           />
         ))}
