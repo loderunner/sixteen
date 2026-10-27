@@ -1,8 +1,8 @@
 import { GROUP_SIZES, GROUPS, type Group } from '@/palette';
+import { GROUP_DESCRIPTIONS, SWATCH_ROLES } from '@/ui/components/swatch-roles';
 import { usePalette } from '@/ui/palette';
 import { tw } from '@/ui/tw';
 
-import { GROUP_DESCRIPTIONS, SWATCH_ROLES } from './roles';
 import { SwatchTile } from './swatch-tile';
 
 const GRID: Record<Group, string> = {

@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { contrast, type OKLCH, type Swatch } from '@/palette';
 import { CopyButton } from '@/ui/components/copy-button';
+import { SwatchValues } from '@/ui/components/swatch-values';
 
 /** Props of `SwatchTile`. */
 export type SwatchTileProps = ComponentProps<'li'> & {
@@ -36,8 +37,6 @@ export function SwatchTile({
       ? candidate
       : best,
   );
-  const { l, c, h } = swatch.color;
-  const ratio = contrast(swatch.color, background);
 
   return (
     <li
@@ -59,16 +58,7 @@ export function SwatchTile({
         </div>
         <CopyButton text={swatch.hex} label={`Copy ${swatch.hex}`} />
       </div>
-      <dl className="font-mono text-xs text-ink-0">
-        <dt className="sr-only">Hex</dt>
-        <dd className="text-ink-1">{swatch.hex}</dd>
-        <dt className="sr-only">OKLCH</dt>
-        <dd className="truncate">
-          oklch({(l * 100).toFixed(1)}% {c.toFixed(3)} {h.toFixed(0)})
-        </dd>
-        <dt className="sr-only">Contrast on the page</dt>
-        <dd className="truncate">{ratio.toFixed(1)}:1 on the page</dd>
-      </dl>
+      <SwatchValues swatch={swatch} background={background} />
     </li>
   );
 }
