@@ -16,6 +16,7 @@ import {
 } from '@/ui/palette';
 import { ExportSection } from '@/ui/sections/export/export-section';
 import { Hero } from '@/ui/sections/hero/hero';
+import { ShowcaseSection } from '@/ui/sections/showcase/showcase-section';
 import { SwatchesSection } from '@/ui/sections/swatches/swatches-section';
 import { TerminalSection } from '@/ui/sections/terminal/terminal-section';
 import { useResolvedTheme } from '@/ui/theme';
@@ -70,6 +71,7 @@ function Palette({ pathSeed }: PaletteProps) {
       <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-20 px-4 py-6 sm:px-8 sm:py-10">
         <Hero />
         <SwatchesSection />
+        <ShowcaseSection />
         <Suspense fallback={<div className="h-160" />}>
           <EditorSection />
         </Suspense>
