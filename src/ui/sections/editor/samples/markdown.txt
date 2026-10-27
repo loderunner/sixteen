@@ -1,6 +1,6 @@
 # Harbor
 
-A palette grown from **`#7ab4c8`**, in the structure of [Nord](https://www.nordtheme.com).
+A palette grown from **`#7ab4c8`**, in [four groups](https://example.com/7ab4c8).
 
 ## Groups
 

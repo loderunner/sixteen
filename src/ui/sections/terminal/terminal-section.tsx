@@ -54,7 +54,7 @@ const SESSION: Run[][] = [
   ],
   [
     { text: ' ✗ ', color: 1 },
-    { text: 'exports/ghostty.test.ts ', color: 'foreground' },
+    { text: 'exports/terminal.test.ts ', color: 'foreground' },
     { text: '(2 tests | 1 failed)', color: 1 },
   ],
   [
@@ -117,7 +117,7 @@ export function TerminalSection() {
           In the terminal
         </h2>
         <p className="mt-1 max-w-2xl text-ink-0">
-          The 16 ANSI colors of the iTerm2 and Ghostty exports, at work.
+          The 16 ANSI colors of the exported terminal themes, at work.
         </p>
       </div>
       <figure className="flex flex-col overflow-hidden rounded-lg ring-1 ring-surface-2">

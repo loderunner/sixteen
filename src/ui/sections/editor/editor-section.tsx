@@ -44,7 +44,7 @@ export function EditorSection() {
             In the editor
           </h2>
           <p className="mt-1 max-w-2xl text-ink-0">
-            The exported VS Code theme, colored by the same grammars VS Code
+            The exported editor theme, colored by the same grammars your editor
             uses. Edit the code to try your own.
           </p>
         </div>

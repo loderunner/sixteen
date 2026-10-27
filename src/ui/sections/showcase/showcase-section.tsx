@@ -103,7 +103,8 @@ export function ShowcaseSection() {
         </Card>
         <div className="flex flex-col gap-3 lg:col-span-3">
           <Alert tone="error" title="Export failed">
-            The Ghostty theme could not be written. Check the folder exists.
+            The terminal theme could not be written. Check that the folder
+            exists.
           </Alert>
           <Alert tone="warning" title="Low contrast">
             Comments sit at 3.1:1 on panels. Fine for code, short of body text.

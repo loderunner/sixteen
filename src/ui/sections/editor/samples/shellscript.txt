@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Install the theme for every editor we find.
+# Install the theme in every theme folder we find.
 readonly THEME="harbor"
 readonly SOURCE="${1:-./themes}"
 
@@ -11,9 +11,9 @@ install_theme() {
   echo "Installed $THEME in $target"
 }
 
-for editor in code cursor codium; do
-  if command -v "$editor" >/dev/null 2>&1; then
-    install_theme "$HOME/.$editor/extensions/$THEME/themes"
+for folder in "$HOME/.config/themes" "$HOME/.local/share/themes"; do
+  if [[ -d "$folder" ]]; then
+    install_theme "$folder/$THEME"
   fi
 done
 

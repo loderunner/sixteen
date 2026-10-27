@@ -28,9 +28,8 @@ export function Hero({ ref, ...props }: ComponentProps<'header'>) {
               {names.palette}
             </h1>
             <p className="mt-3 text-lg text-ink-0">
-              Sixteen colors grown from {pair.seed}, in the structure of Nord:
-              four backgrounds, three text colors, four accents in your hue and
-              five around it.
+              16 colors grown from {pair.seed}: four backgrounds, three text
+              colors, four accents in your hue and five around it.
             </p>
           </div>
           <Spectrum className="h-36 sm:h-48 lg:h-auto lg:min-h-48 lg:flex-1" />

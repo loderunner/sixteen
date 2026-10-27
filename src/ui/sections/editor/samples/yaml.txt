@@ -8,13 +8,13 @@ variants: &variants
   - light
 
 exports:
-  vscode:
+  editor:
     enabled: true
     variants: *variants
-  ghostty:
+  terminal:
     enabled: true
-    path: ~/.config/ghostty/themes/
-  tailwind:
+    path: ~/.config/themes/
+  css:
     enabled: false # not yet
     prefix: null
 
