@@ -125,17 +125,25 @@ export const SIGNAL_TONES = {
 /** Signals keep at least this many degrees from the in-hue band if they can. */
 export const SIGNAL_CLEARANCE = 30;
 
-/** Accents of the light variant are at least this contrasted on surface #0. */
-export const LIGHT_ACCENT_MIN_CONTRAST = 3.2;
-
-/** …and at most this, so they stay colors rather than near-black. */
-export const LIGHT_ACCENT_MAX_CONTRAST = 6;
+/**
+ * How accent contrast on surface #0 carries over from the dark variant to the
+ * light one. Dark contrasts in `dark` map, on a log scale, onto `light`, and
+ * clamp outside it. Order is kept, so distinct accents stay distinct, while
+ * light accents never fade below 3:1 or sink to near-black.
+ */
+export const LIGHT_ACCENT_CONTRAST = {
+  dark: [2, 12],
+  light: [3.2, 6.5],
+} as const;
 
 /** Accents of the light variant are a little more saturated than dark ones. */
 export const LIGHT_ACCENT_CHROMA_BOOST = 1.12;
 
 /** Accent hue for a seed with no hue at all (a pure gray). */
 export const ACHROMATIC_HUE = 235;
+
+/** Neutrals outside the seed's own group are tinted at most this strongly. */
+export const NEUTRAL_TINT_CAP = 2;
 
 /** Below this chroma a color has no meaningful hue. */
 export const ACHROMATIC_CHROMA = 0.008;

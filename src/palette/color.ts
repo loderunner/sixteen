@@ -37,6 +37,9 @@ const isInSRGB = inGamut('rgb');
 const mapToSRGB = toGamut('rgb', 'oklch');
 const deltaEOK = differenceEuclidean('oklab');
 
+/** Chroma under which a color is gray for all practical purposes. */
+const GRAY_CHROMA = 1e-4;
+
 const HEX = /^#?(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 /**
@@ -83,7 +86,9 @@ export function parseHex(hex: string): OKLCH | undefined {
  */
 export function gamutMap(color: OKLCH): OKLCH {
   const mapped = toOKLCH(mapToSRGB({ mode: 'oklch', ...color }));
-  return { l: mapped.l, c: mapped.c, h: normalizeHue(mapped.h ?? color.h) };
+  // A gray's hue is rounding noise: keep the one asked for.
+  const hue = mapped.c < GRAY_CHROMA ? color.h : (mapped.h ?? color.h);
+  return { l: mapped.l, c: mapped.c, h: normalizeHue(hue) };
 }
 
 /**
