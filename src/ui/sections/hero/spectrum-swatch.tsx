@@ -64,7 +64,7 @@ export function SpectrumSwatch({
         )}
       </div>
       <Tooltip.Portal>
-        <Tooltip.Positioner sideOffset={8} className="z-30">
+        <Tooltip.Positioner side="bottom" sideOffset={16} className="z-30">
           <Tooltip.Popup className="flex w-56 flex-col gap-2 rounded-lg border border-surface-2 bg-surface-1 p-3 shadow-lg transition-opacity duration-100 data-ending-style:opacity-0 data-instant:transition-none data-starting-style:opacity-0">
             <div className="flex min-w-0 items-start justify-between gap-2">
               <div className="min-w-0">
