@@ -85,6 +85,9 @@ src/
   generator is deterministic: a path always means the same palette. Golden tests
   pin generator output; an intentional change needs a new path version prefix
   (`/v2/…`), with unversioned paths keeping their meaning.
+- A color picked on screen is picked for the variant the page shows, which holds
+  it when one of its slots fits. When that moves the seed out of its usual
+  variant, the path says so (`/light/2a0040`); otherwise it stays `/2a0040`.
 - The app writes both variants as `--dark-*` and `--light-*` custom properties
   on `<html>`; `data-theme` selects one. Switching the theme never re-renders.
 
