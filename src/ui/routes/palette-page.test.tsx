@@ -4,8 +4,11 @@ import { createMemoryRouter, RouterProvider } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { generatePalette, namePalette } from '@/palette';
+import { type Theme } from '@/ui/theme';
 
 import { routes } from '.';
+
+const THEMES: Theme[] = ['dark', 'light'];
 
 const renderAt = (path: string) => {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
@@ -16,6 +19,7 @@ const renderAt = (path: string) => {
 describe('routes', () => {
   beforeEach(() => {
     document.documentElement.removeAttribute('style');
+    document.documentElement.removeAttribute('data-theme');
     vi.stubGlobal('matchMedia', () => ({
       matches: false,
       addEventListener: vi.fn(),
@@ -27,12 +31,21 @@ describe('routes', () => {
     vi.unstubAllGlobals();
   });
 
-  it('redirects / to a random palette', async () => {
-    const router = renderAt('/');
+  it.each(THEMES)(
+    'redirects / to a random palette whose seed shows in the %s theme',
+    async (theme) => {
+      document.documentElement.dataset.theme = theme;
+      const router = renderAt('/');
 
-    expect(await screen.findByRole('heading', { level: 1 })).toBeVisible();
-    expect(router.state.location.pathname).toMatch(/^\/[0-9a-f]{6}$/);
-  });
+      expect(await screen.findByRole('heading', { level: 1 })).toBeVisible();
+
+      const { pathname } = router.state.location;
+
+      expect(pathname).toMatch(/^\/[0-9a-f]{6}$/);
+      expect(generatePalette(pathname.slice(1))?.slot.variant).toBe(theme);
+      expect(screen.queryByText(/Switch the theme/)).not.toBeInTheDocument();
+    },
+  );
 
   it('shows the palette of the seed in the path', async () => {
     const pair = generatePalette('#e06c75');
