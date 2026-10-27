@@ -19,8 +19,8 @@
     ".agents/skills/",
     "dist/",
     "coverage/",
-
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "src/ui/sections/editor/samples/"
   ],
   "overrides": [
     {

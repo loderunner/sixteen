@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Install the theme for every editor we find.
+readonly THEME="harbor"
+readonly SOURCE="${1:-./themes}"
+
+install_theme() {
+  local target="$1"
+  mkdir -p "$target" && cp "$SOURCE/$THEME"-*.json "$target/"
+  echo "Installed $THEME in $target"
+}
+
+for editor in code cursor codium; do
+  if command -v "$editor" >/dev/null 2>&1; then
+    install_theme "$HOME/.$editor/extensions/$THEME/themes"
+  fi
+done
+
+count=$(find "$SOURCE" -name '*.json' | wc -l)
+printf 'Done: %d files\n' "$count"
+exit 0

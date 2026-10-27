@@ -152,3 +152,12 @@
     background: color-mix(in srgb, var(--surface-3) 45%, transparent);
   }
 }
+
+/* The code editor's textarea is see-through: the highlighted code under it
+   shows instead of its text, and only the selection paints. */
+@utility code-editor-input {
+  &::selection {
+    background: var(--selection);
+    color: transparent;
+  }
+}

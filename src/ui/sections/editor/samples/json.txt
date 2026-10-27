@@ -1,0 +1,16 @@
+{
+  "$schema": "https://example.com/palette.schema.json",
+  "name": "Harbor",
+  "seed": "#7ab4c8",
+  "variants": {
+    "dark": {
+      "surface": ["#28313c", "#34404d", "#3c4a5a", "#4b5b6e"],
+      "ink": ["#d5dde7", "#e2e9ef", "#edf1f5"],
+      "hue": ["#80b1b3", "#7ab4c8", "#7695b8", "#5774a3"],
+      "signal": ["#c46668", "#d28a69", "#e9ca87", "#9cbf8c", "#ae8eb6"]
+    }
+  },
+  "contrast": { "text": 9.6, "primary": 5.7 },
+  "generated": true,
+  "license": null
+}

@@ -1,0 +1,26 @@
+# Palette build settings
+name: Harbor
+seed: "#7ab4c8"
+version: 1.2
+
+variants: &variants
+  - dark
+  - light
+
+exports:
+  vscode:
+    enabled: true
+    variants: *variants
+  ghostty:
+    enabled: true
+    path: ~/.config/ghostty/themes/
+  tailwind:
+    enabled: false # not yet
+    prefix: null
+
+contrast:
+  text: 7.0
+  accents: 3.0
+notes: |
+  Every color is one of the sixteen,
+  with or without alpha.

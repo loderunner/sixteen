@@ -1,0 +1,19 @@
+# Harbor
+
+A palette grown from **`#7ab4c8`**, in the structure of [Nord](https://www.nordtheme.com).
+
+## Groups
+
+1. *Night Tide*: four backgrounds
+2. *Sailcloth*: three text colors
+3. *Open Water*: four accents in the seed's hue
+4. *Signal Flags*: five accents around it
+
+> Every color of the editor theme is one of the sixteen.
+
+```css
+.card { background: var(--surface-1); }
+```
+
+- [x] Dark variant
+- [ ] Light variant

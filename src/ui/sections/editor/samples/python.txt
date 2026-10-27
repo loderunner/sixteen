@@ -1,0 +1,27 @@
+from dataclasses import dataclass, field
+from math import cos, radians, sin
+
+
+@dataclass(frozen=True)
+class Swatch:
+    """One color of the palette, in OKLCH."""
+
+    lightness: float
+    chroma: float
+    hue: float = 0.0
+    tags: list[str] = field(default_factory=list)
+
+    @property
+    def lab(self) -> tuple[float, float, float]:
+        angle = radians(self.hue)
+        return self.lightness, self.chroma * cos(angle), self.chroma * sin(angle)
+
+
+def ladder(start: float = 0.31, *, steps: int = 4) -> list[Swatch]:
+    # Uneven steps: the first is the widest.
+    return [Swatch(start + 0.05 * i ** 0.9, 0.022 + 0.004 * i, 252) for i in range(steps)]
+
+
+if __name__ == "__main__":
+    for swatch in ladder():
+        print(f"L={swatch.lightness:.3f}\tC={swatch.chroma:.3f}")

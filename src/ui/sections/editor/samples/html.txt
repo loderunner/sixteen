@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Palette &mdash; preview</title>
+    <link rel="stylesheet" href="palette.css" />
+    <style>
+      body { background: var(--surface-0); color: var(--ink-0); }
+    </style>
+  </head>
+  <body>
+    <!-- Sixteen swatches, in four groups -->
+    <main id="palette" class="grid">
+      <section aria-labelledby="surface">
+        <h2 id="surface">Backgrounds</h2>
+        <button type="button" data-hex="#28313c" disabled>Copy</button>
+      </section>
+    </main>
+    <script type="module">
+      import { generate } from './palette.js';
+      document.title = generate('#7ab4c8').name;
+    </script>
+  </body>
+</html>

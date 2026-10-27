@@ -1,0 +1,21 @@
+// Step a lightness ladder from dark to light.
+export async function* ladder(from = 0.31, to = 0.465, steps = 4) {
+  const delta = (to - from) / (steps - 1);
+  for (let index = 0; index < steps; index++) {
+    yield { index, lightness: Number((from + delta * index).toFixed(3)) };
+  }
+}
+
+const swatches = [];
+for await (const step of ladder()) {
+  swatches.push({ ...step, label: `surface-${step.index}` });
+}
+
+document.querySelector('#palette')?.addEventListener('click', (event) => {
+  const target = event.target.closest('[data-hex]');
+  if (target !== null && typeof navigator.clipboard !== 'undefined') {
+    void navigator.clipboard.writeText(target.dataset.hex);
+  }
+});
+
+console.table(swatches, ['label', 'lightness']);

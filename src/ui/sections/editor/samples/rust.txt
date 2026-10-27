@@ -1,0 +1,29 @@
+use std::fmt;
+
+/// A color in OKLCH: lightness, chroma, hue.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Oklch {
+    pub l: f64,
+    pub c: f64,
+    pub h: f64,
+}
+
+impl fmt::Display for Oklch {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "oklch({:.1}% {:.3} {:.0})", self.l * 100.0, self.c, self.h)
+    }
+}
+
+pub fn spread<'a>(primary: &'a Oklch, offsets: &[f64]) -> impl Iterator<Item = Oklch> + 'a {
+    offsets.iter().map(move |&turn| Oklch {
+        h: (primary.h + turn).rem_euclid(360.0),
+        ..*primary
+    })
+}
+
+fn main() {
+    let primary = Oklch { l: 0.775, c: 0.064, h: 222.0 };
+    for (index, color) in spread(&primary, &[-22.0, 0.0, 30.0, 38.0]).enumerate() {
+        println!("hue-{index}: {color}");
+    }
+}

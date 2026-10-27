@@ -1,0 +1,28 @@
+import { type OKLCH, toHex } from './color';
+
+/** A swatch of the palette, by role. */
+export interface Swatch {
+  role: 'surface' | 'ink' | 'hue' | 'signal';
+  color: OKLCH;
+}
+
+const HEX = /^#?([0-9a-f]{6})$/i;
+
+@sealed
+export class Palette {
+  readonly #swatches = new Map<string, Swatch>();
+
+  constructor(private readonly seed: string, public lightness = 0.775) {}
+
+  add(name: string, swatch: Swatch): this {
+    if (!HEX.test(this.seed)) {
+      throw new Error(`Invalid seed: ${this.seed}\n`);
+    }
+    this.#swatches.set(name, swatch);
+    return this;
+  }
+
+  get hexes(): string[] {
+    return [...this.#swatches.values()].map(({ color }) => toHex(color));
+  }
+}

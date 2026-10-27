@@ -1,0 +1,29 @@
+package palette
+
+import (
+	"errors"
+	"fmt"
+	"strings"
+)
+
+// ErrInvalidSeed is returned for anything that is not a hex color.
+var ErrInvalidSeed = errors.New("palette: invalid seed")
+
+// Swatch is one color of a palette.
+type Swatch struct {
+	Role string
+	Hex  string
+}
+
+// Parse reads a seed such as "7ab4c8" or "#7AB".
+func Parse(seed string) (string, error) {
+	seed = strings.TrimPrefix(strings.ToLower(seed), "#")
+	switch len(seed) {
+	case 3:
+		return fmt.Sprintf("#%c%c%c%c%c%c", seed[0], seed[0], seed[1], seed[1], seed[2], seed[2]), nil
+	case 6:
+		return "#" + seed, nil
+	default:
+		return "", fmt.Errorf("%w: %q", ErrInvalidSeed, seed)
+	}
+}

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo } from 'react';
+import { lazy, Suspense, useLayoutEffect, useMemo } from 'react';
 import { Navigate, useParams } from 'react-router';
 
 import {
@@ -69,11 +69,20 @@ function Palette({ pathSeed }: PaletteProps) {
       <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-20 px-4 py-6 sm:px-8 sm:py-10">
         <Hero />
         <SwatchesSection />
+        <Suspense fallback={<div className="h-160" />}>
+          <EditorSection />
+        </Suspense>
         <ExportSection />
       </main>
     </PaletteProvider>
   );
 }
+
+// Below the fold, and the heaviest section: Shiki, samples, a select.
+const EditorSection = lazy(async () => {
+  const module = await import('@/ui/sections/editor/editor-section');
+  return { default: module.EditorSection };
+});
 
 const generateOrThrow = (seed: string): PalettePair => {
   const pair = generatePalette(seed);

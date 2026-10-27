@@ -1,0 +1,18 @@
+-- Palettes shared in the last 30 days, by family.
+WITH recent AS (
+  SELECT seed, family, created_at
+  FROM palettes
+  WHERE created_at >= NOW() - INTERVAL '30 days'
+    AND seed ~ '^#[0-9a-f]{6}$'
+)
+SELECT
+  family,
+  COUNT(*) AS shared,
+  ROUND(AVG(contrast_ratio)::numeric, 2) AS mean_contrast,
+  MAX(created_at) AS latest
+FROM recent
+JOIN contrasts USING (seed)
+GROUP BY family
+HAVING COUNT(*) > 10
+ORDER BY shared DESC
+LIMIT 5;
