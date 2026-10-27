@@ -19,7 +19,7 @@ export function Spectrum({ className, ...props }: ComponentProps<'figure'>) {
   return (
     <figure
       aria-label={`The 16 colors of ${names.palette}`}
-      className={twMerge('flex h-36 gap-1.5 sm:h-48 sm:gap-3', className)}
+      className={twMerge('flex gap-1.5 sm:gap-3', className)}
       {...props}
     >
       {GROUPS.map((group) => (
