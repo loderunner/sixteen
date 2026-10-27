@@ -25,6 +25,7 @@ export {
   type SwatchNames,
 } from './names';
 export { pathOfSeed, seedOfSegment } from './path';
+export { randomSeed } from './random';
 export {
   type Group,
   GROUP_SIZES,
@@ -34,5 +35,5 @@ export {
   type Variant,
 } from './structure';
 
-/** Seed of the palette shown at `/`: a mid-lightness cool cyan. */
+/** Seed of the palette linked from the not-found page: a mid-lightness cool cyan. */
 export const DEFAULT_SEED = '#7ab4c8';

@@ -27,11 +27,11 @@ describe('routes', () => {
     vi.unstubAllGlobals();
   });
 
-  it('redirects / to the default palette', async () => {
+  it('redirects / to a random palette', async () => {
     const router = renderAt('/');
 
     expect(await screen.findByRole('heading', { level: 1 })).toBeVisible();
-    expect(router.state.location.pathname).toBe('/7ab4c8');
+    expect(router.state.location.pathname).toMatch(/^\/[0-9a-f]{6}$/);
   });
 
   it('shows the palette of the seed in the path', async () => {
