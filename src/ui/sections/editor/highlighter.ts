@@ -6,7 +6,11 @@ import { type Language } from './languages';
 
 let highlighter: Promise<HighlighterCore> | undefined;
 const loaded = new Map<string, Promise<void>>();
-const themesLoaded = new WeakSet<VSCodeTheme>();
+// Shiki re-applies a theme only when its name changes, so each new theme
+// takes the name the current one does not hold.
+const THEME_NAMES = ['sixteen-a', 'sixteen-b'] as const;
+let currentTheme: VSCodeTheme | undefined;
+let currentName: string = THEME_NAMES[0];
 
 /**
  * The shared Shiki highlighter, with the JavaScript regex engine (no
@@ -65,13 +69,15 @@ export function tokenize(
   language: Language,
   theme: VSCodeTheme,
 ): ThemedToken[][] {
-  if (!themesLoaded.has(theme)) {
+  if (theme !== currentTheme) {
+    currentName =
+      currentName === THEME_NAMES[0] ? THEME_NAMES[1] : THEME_NAMES[0];
     // Loading a theme under a name replaces the previous one of that name.
-    core.loadThemeSync({ ...theme, name: `sixteen-${theme.type}` });
-    themesLoaded.add(theme);
+    core.loadThemeSync({ ...theme, name: currentName });
+    currentTheme = theme;
   }
   return core.codeToTokens(code, {
     lang: language.id,
-    theme: `sixteen-${theme.type}`,
+    theme: currentName,
   }).tokens;
 }
