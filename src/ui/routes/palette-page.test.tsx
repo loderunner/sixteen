@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -72,5 +73,34 @@ describe('routes', () => {
     expect(
       await screen.findByRole('heading', { name: 'No palette here' }),
     ).toBeVisible();
+  });
+});
+
+describe('the hex field', () => {
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('changes the palette and then the path', async () => {
+    const router = renderAt('/7ab4c8');
+    const field = await screen.findByRole('textbox', { name: 'Hex' });
+
+    await userEvent.clear(field);
+    await userEvent.type(field, 'e06c75');
+
+    expect(
+      document.documentElement.style.getPropertyValue('--dark-hue-1'),
+    ).toBe('#e06c75');
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/e06c75');
+    });
   });
 });

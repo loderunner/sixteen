@@ -1,6 +1,12 @@
 import { createContext, type ReactNode, use } from 'react';
 
-import { type PaletteNames, type PalettePair } from '@/palette';
+import {
+  type Palette,
+  type PaletteNames,
+  type PalettePair,
+  type SwatchNames,
+  type Variant,
+} from '@/palette';
 
 /** The palette on screen, and how to change it. */
 export type PaletteState = {
@@ -8,6 +14,12 @@ export type PaletteState = {
   pair: PalettePair;
   /** Names of the palette and its groups. */
   names: PaletteNames;
+  /** The variant the page shows, from the theme. */
+  variant: Variant;
+  /** The palette of that variant. */
+  palette: Palette;
+  /** Each swatch's name, once the list of names has loaded. */
+  swatchNames: SwatchNames | undefined;
   /** Changes the seed. The path follows shortly after. */
   setSeed: (seed: string) => void;
 };

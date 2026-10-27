@@ -8,8 +8,15 @@ import {
   type PalettePair,
   seedOfSegment,
 } from '@/palette';
-import { applyPalette, PaletteProvider, useSeed } from '@/ui/palette';
-import { ThemeToggle } from '@/ui/theme';
+import {
+  applyPalette,
+  PaletteProvider,
+  useSeed,
+  useSwatchNames,
+} from '@/ui/palette';
+import { Hero } from '@/ui/sections/hero/hero';
+import { SwatchesSection } from '@/ui/sections/swatches/swatches-section';
+import { useResolvedTheme } from '@/ui/theme';
 
 import { NotFoundPage } from './not-found-page';
 
@@ -39,6 +46,8 @@ function Palette({ pathSeed }: PaletteProps) {
   const [seed, setSeed] = useSeed(pathSeed);
   const pair = useMemo(() => generateOrThrow(seed), [seed]);
   const names = useMemo(() => namePalette(pair), [pair]);
+  const swatchNames = useSwatchNames(pair);
+  const variant = useResolvedTheme();
 
   // Before paint, so the page never shows the previous palette.
   useLayoutEffect(() => {
@@ -46,14 +55,19 @@ function Palette({ pathSeed }: PaletteProps) {
   }, [pair]);
 
   return (
-    <PaletteProvider value={{ pair, names, setSeed }}>
-      <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-10 px-4 py-8 sm:px-8">
-        <header className="flex items-start justify-between gap-4">
-          <h1 className="text-5xl font-semibold tracking-tight text-ink-2 sm:text-7xl">
-            {names.palette}
-          </h1>
-          <ThemeToggle className="mt-3" />
-        </header>
+    <PaletteProvider
+      value={{
+        pair,
+        names,
+        setSeed,
+        variant,
+        palette: pair[variant],
+        swatchNames,
+      }}
+    >
+      <main className="mx-auto flex min-h-dvh max-w-6xl flex-col gap-20 px-4 py-6 sm:px-8 sm:py-10">
+        <Hero />
+        <SwatchesSection />
       </main>
     </PaletteProvider>
   );
