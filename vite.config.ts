@@ -13,10 +13,25 @@ export default defineConfig({
   build: {
     outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,
-    // The entry chunk is React DOM, React Router and Base UI (~160 kB
-    // gzipped); everything heavier (Shiki, grammars, color names, the
-    // editor) is split out and loaded on demand.
-    chunkSizeWarningLimit: 600,
+    rolldownOptions: {
+      output: {
+        // Libraries change less often than the app: their own chunks stay
+        // cached across deploys. Shiki, grammars, color names and the editor
+        // are split out already, loaded on demand.
+        codeSplitting: {
+          groups: [
+            {
+              name: 'react',
+              test: /[\\/]node_modules[\\/](react|react-dom|react-router|scheduler)[\\/]/,
+            },
+            {
+              name: 'base-ui',
+              test: /[\\/]node_modules[\\/](@base-ui|@floating-ui)[\\/]/,
+            },
+          ],
+        },
+      },
+    },
   },
   server: {
     port: 5173,
