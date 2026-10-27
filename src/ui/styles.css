@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+/* `data-theme` on <html> is always `light` or `dark`: index.html sets it before
+   first paint and `useTheme` keeps it current. */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* Every color of the page is one of the sixteen swatches of the current
+   palette, by role:
+
+     surface-0..3   four background neutrals: the page, a raised sheet, a
+                    selected sheet, and the faded ink of comments and borders
+     ink-0..2       three foreground neutrals: text, and two steps of emphasis
+     hue-0..3       four accents in the seed's hue; hue-1 is the primary
+     signal-*       five accents out of the seed's hue: red errors, orange
+                    annotations, yellow warnings, green successes, and a rare
+                    fifth
+
+   The app sets `--dark-*` and `--light-*` on <html> from the generated pair
+   (src/ui/palette-vars.ts); `data-theme` picks the variant, so switching it
+   needs no re-render. The values below only stand in until then. */
+@theme inline {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentcolor;
+
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink-0: var(--ink-0);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-hue-0: var(--hue-0);
+  --color-hue-1: var(--hue-1);
+  --color-hue-2: var(--hue-2);
+  --color-hue-3: var(--hue-3);
+  --color-signal-red: var(--signal-red);
+  --color-signal-orange: var(--signal-orange);
+  --color-signal-yellow: var(--signal-yellow);
+  --color-signal-green: var(--signal-green);
+  --color-signal-rare: var(--signal-rare);
+}
+
+:root {
+  --light-surface-0: #f7f7f7;
+  --light-surface-1: #ececec;
+  --light-surface-2: #e0e0e0;
+  --light-surface-3: #8a8a8a;
+  --light-ink-0: #3a3a3a;
+  --light-ink-1: #2c2c2c;
+  --light-ink-2: #1f1f1f;
+  --light-hue-0: #4f6f6f;
+  --light-hue-1: #3f6f80;
+  --light-hue-2: #4a5f80;
+  --light-hue-3: #3f5070;
+  --light-signal-red: #a03c45;
+  --light-signal-orange: #a0573c;
+  --light-signal-yellow: #806020;
+  --light-signal-green: #4f7040;
+  --light-signal-rare: #7a4f78;
+
+  --dark-surface-0: #2b2b2b;
+  --dark-surface-1: #363636;
+  --dark-surface-2: #3e3e3e;
+  --dark-surface-3: #4a4a4a;
+  --dark-ink-0: #dcdcdc;
+  --dark-ink-1: #e6e6e6;
+  --dark-ink-2: #efefef;
+  --dark-hue-0: #8fb5b5;
+  --dark-hue-1: #8ab8c8;
+  --dark-hue-2: #8aa0bb;
+  --dark-hue-3: #6a82a5;
+  --dark-signal-red: #c06a70;
+  --dark-signal-orange: #c88a75;
+  --dark-signal-yellow: #e0c890;
+  --dark-signal-green: #a5bb90;
+  --dark-signal-rare: #b090aa;
+}
+
+:root,
+[data-theme='light'] {
+  --surface-0: var(--light-surface-0);
+  --surface-1: var(--light-surface-1);
+  --surface-2: var(--light-surface-2);
+  --surface-3: var(--light-surface-3);
+  --ink-0: var(--light-ink-0);
+  --ink-1: var(--light-ink-1);
+  --ink-2: var(--light-ink-2);
+  --hue-0: var(--light-hue-0);
+  --hue-1: var(--light-hue-1);
+  --hue-2: var(--light-hue-2);
+  --hue-3: var(--light-hue-3);
+  --signal-red: var(--light-signal-red);
+  --signal-orange: var(--light-signal-orange);
+  --signal-yellow: var(--light-signal-yellow);
+  --signal-green: var(--light-signal-green);
+  --signal-rare: var(--light-signal-rare);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --surface-0: var(--dark-surface-0);
+  --surface-1: var(--dark-surface-1);
+  --surface-2: var(--dark-surface-2);
+  --surface-3: var(--dark-surface-3);
+  --ink-0: var(--dark-ink-0);
+  --ink-1: var(--dark-ink-1);
+  --ink-2: var(--dark-ink-2);
+  --hue-0: var(--dark-hue-0);
+  --hue-1: var(--dark-hue-1);
+  --hue-2: var(--dark-hue-2);
+  --hue-3: var(--dark-hue-3);
+  --signal-red: var(--dark-signal-red);
+  --signal-orange: var(--dark-signal-orange);
+  --signal-yellow: var(--dark-signal-yellow);
+  --signal-green: var(--dark-signal-green);
+  --signal-rare: var(--dark-signal-rare);
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--surface-0);
+    color: var(--ink-0);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Own stacking context, so z-indexed app content (sticky headers) can never
+     paint above Base UI layers portaled to <body> (menus, toasts). */
+  #root {
+    isolation: isolate;
+  }
+
+  a {
+    color: var(--hue-1);
+  }
+
+  a:hover {
+    color: var(--hue-0);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--hue-1);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--surface-3) 45%, transparent);
+  }
+}

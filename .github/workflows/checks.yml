@@ -1,0 +1,27 @@
+name: Checks
+
+on:
+  workflow_call:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - parallel:
+          - name: Format
+            run: pnpm run format
+          - name: Lint
+            run: pnpm run lint
+          - name: Typecheck
+            run: pnpm run typecheck
+          - name: Test
+            run: pnpm run test --reporter=default --reporter=github-actions
+          - name: Build
+            run: pnpm run build

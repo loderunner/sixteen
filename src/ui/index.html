@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Generate a Nord-structured 16-color palette from any color."
+    />
+    <!-- Sets data-theme before first paint so a dark page never flashes light.
+         Keep in sync with src/ui/theme/use-theme.ts (storage key, values). -->
+    <script>
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (error) {}
+        var dark =
+          stored === 'dark' ||
+          (stored !== 'light' &&
+            matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      })();
+    </script>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='8' height='8' fill='%232e3a46'/%3E%3Crect x='8' width='8' height='8' fill='%23dde3ea'/%3E%3Crect y='8' width='8' height='8' fill='%2380b8c8'/%3E%3Crect x='8' y='8' width='8' height='8' fill='%23c87878'/%3E%3C/svg%3E"
+    />
+    <title>Nord-like</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/dist
+
+# misc
+.DS_Store
+
+# debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# env files
+.env*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+
+# Agents
+.claude/
+.agents/

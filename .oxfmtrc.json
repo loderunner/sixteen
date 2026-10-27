@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "singleQuote": true,
+  "printWidth": 80,
+  "sortPackageJson": true,
+  "sortTailwindcss": {
+    "stylesheet": "./src/ui/styles.css",
+    "functions": ["twMerge", "tw"]
+  },
+  "sortImports": {
+    "ignoreCase": false,
+    "newlinesBetween": true,
+    "internalPattern": ["@/"],
+    "sortSideEffects": false
+  },
+  "ignorePatterns": [
+    ".claude/skills/",
+    ".claude/worktrees/",
+    ".agents/skills/",
+    "dist/",
+    "coverage/",
+
+    "pnpm-lock.yaml"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.md"],
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
+}

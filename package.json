@@ -1,0 +1,59 @@
+{
+  "name": "nord-like",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generate a Nord-structured 16-color palette from any color",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "oxfmt --check",
+    "format:fix": "oxfmt",
+    "lint": "oxlint --max-warnings 0",
+    "lint:fix": "oxlint --fix --max-warnings 0",
+    "fix": "pnpm run format:fix && pnpm run lint:fix",
+    "typecheck": "tsc -b",
+    "test": "vitest run --typecheck",
+    "test:watch": "vitest --typecheck",
+    "test:coverage": "vitest run --coverage --typecheck"
+  },
+  "dependencies": {
+    "@base-ui/react": "1.9.0",
+    "@fontsource/geist": "5.3.0",
+    "@fontsource/geist-mono": "5.3.0",
+    "@phosphor-icons/react": "2.1.10",
+    "color-name-list": "14.80.0",
+    "culori": "4.0.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "8.5.0",
+    "shiki": "4.5.0",
+    "tailwind-merge": "3.7.0"
+  },
+  "devDependencies": {
+    "@oxlint/plugins": "1.89.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/culori": "4.0.1",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint-plugin-better-tailwindcss": "4.10.0",
+    "jsdom": "30.1.3",
+    "oxfmt": "0.74.0",
+    "oxlint": "1.89.0",
+    "oxlint-tsgolint": "7.0.2004",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
