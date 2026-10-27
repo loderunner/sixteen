@@ -6,4 +6,4 @@ export {
 } from './palette-context';
 export { useSeed } from './use-seed';
 export { useSwatchNames } from './use-swatch-names';
-export { applyPalette, paletteVariables, ROLE_NAMES } from './variables';
+export { applyPalette, paletteVariables } from './variables';

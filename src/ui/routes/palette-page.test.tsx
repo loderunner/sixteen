@@ -104,3 +104,43 @@ describe('the hex field', () => {
     });
   });
 });
+
+describe('the export section', () => {
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', () => ({
+      matches: false,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('downloads a file named after the palette', async () => {
+    const createObjectURL = vi.fn((_blob: Blob) => 'blob:palette');
+    vi.stubGlobal(
+      'URL',
+      Object.assign(URL, { createObjectURL, revokeObjectURL: vi.fn() }),
+    );
+    const click = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(() => undefined);
+    const pair = generatePalette('#7ab4c8');
+    if (pair === undefined) {
+      throw new Error('No palette');
+    }
+    const slug = namePalette(pair).palette.toLowerCase().replace(/ /g, '-');
+    renderAt('/7ab4c8');
+
+    await userEvent.click(
+      await screen.findByRole('button', { name: `${slug}.css` }),
+    );
+
+    expect(click).toHaveBeenCalledOnce();
+    const blob = createObjectURL.mock.calls[0]?.[0];
+    expect(await blob.text()).toContain('--surface-0: var(');
+  });
+});

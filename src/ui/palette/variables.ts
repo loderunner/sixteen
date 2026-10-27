@@ -1,28 +1,5 @@
-import {
-  type Palette,
-  type PalettePair,
-  SIGNAL_ROLES,
-  type Variant,
-} from '@/palette';
-
-/**
- * The role names of a palette's 16 swatches, as used by the CSS custom
- * properties and the Tailwind tokens in `styles.css`.
- */
-export const ROLE_NAMES = [
-  'surface-0',
-  'surface-1',
-  'surface-2',
-  'surface-3',
-  'ink-0',
-  'ink-1',
-  'ink-2',
-  'hue-0',
-  'hue-1',
-  'hue-2',
-  'hue-3',
-  ...SIGNAL_ROLES.map((role) => `signal-${role}`),
-] as const;
+import { ROLE_NAMES } from '@/exports';
+import { type Palette, type PalettePair, type Variant } from '@/palette';
 
 const hexesOf = ({ surface, ink, hue, signal }: Palette) =>
   [...surface, ...ink, ...hue, ...signal].map(({ hex }) => hex);

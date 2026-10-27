@@ -63,11 +63,11 @@ export function SwatchTile({
         <dt className="sr-only">Hex</dt>
         <dd className="text-ink-1">{swatch.hex}</dd>
         <dt className="sr-only">OKLCH</dt>
-        <dd>
-          oklch({l.toFixed(3)} {c.toFixed(3)} {h.toFixed(0)})
+        <dd className="truncate">
+          oklch({(l * 100).toFixed(1)}% {c.toFixed(3)} {h.toFixed(0)})
         </dd>
         <dt className="sr-only">Contrast on the page</dt>
-        <dd>{ratio.toFixed(1)}:1 on the page</dd>
+        <dd className="truncate">{ratio.toFixed(1)}:1 on the page</dd>
       </dl>
     </li>
   );
