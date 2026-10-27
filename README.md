@@ -1,14 +1,14 @@
-# Nord-like
+# Sixteen
 
-Nord-like turns any color into a 16-color palette with the structure of
+Sixteen turns any color into a 16-color palette with the structure of
 [Nord](https://www.nordtheme.com/docs/colors-and-palettes). It generates a tuned
 dark and light pair, names the palette and its groups after one metaphor,
 previews it in an interface, a code editor and a terminal, and exports it to
 seven formats. It never reuses Nord's colors, only its proportions.
 
 A palette's address is its seed color: `/7ab4c8` always shows the same palette,
-so sharing a palette means sharing its link. Nord-like is a static single-page
-app with no backend.
+so sharing a palette means sharing its link. Sixteen is a static single-page app
+with no backend.
 
 ## Run it
 

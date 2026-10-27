@@ -45,7 +45,7 @@ export type ButtonProps = ComponentProps<'button'> & {
 };
 
 /**
- * A `<button>` styled as a Nord-like button. Defaults to `type="button"`.
+ * A `<button>` in the app's button style. Defaults to `type="button"`.
  * `className` is merged over the button styles; `ref` is the `<button>`.
  */
 export function Button({

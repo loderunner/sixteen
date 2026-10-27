@@ -67,11 +67,11 @@ export function tokenize(
 ): ThemedToken[][] {
   if (!themesLoaded.has(theme)) {
     // Loading a theme under a name replaces the previous one of that name.
-    core.loadThemeSync({ ...theme, name: `nord-like-${theme.type}` });
+    core.loadThemeSync({ ...theme, name: `sixteen-${theme.type}` });
     themesLoaded.add(theme);
   }
   return core.codeToTokens(code, {
     lang: language.id,
-    theme: `nord-like-${theme.type}`,
+    theme: `sixteen-${theme.type}`,
   }).tokens;
 }

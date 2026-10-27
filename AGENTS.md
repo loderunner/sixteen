@@ -1,6 +1,6 @@
-# Nord-like
+# Sixteen
 
-Nord-like generates a 16-color palette from any color the user picks, in the
+Sixteen generates a 16-color palette from any color the user picks, in the
 structure of the [Nord](https://www.nordtheme.com/docs/colors-and-palettes)
 palette: 4 background neutrals, 3 foreground neutrals, 4 accents in the seed's
 hue and 5 accents out of it. It never reuses Nord's colors, only its

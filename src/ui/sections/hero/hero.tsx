@@ -15,7 +15,7 @@ export function Hero({ ref, ...props }: ComponentProps<'header'>) {
   return (
     <header ref={ref} className="flex flex-col gap-8" {...props}>
       <div className="flex items-center justify-between gap-4">
-        <p className="font-semibold text-ink-1">Nord-like</p>
+        <p className="font-semibold text-ink-1">Sixteen</p>
         <div className="flex items-center gap-3">
           <PaletteActions />
           <ThemeToggle />
